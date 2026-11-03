@@ -83,8 +83,8 @@ void testConcurrentOrderPlacement() throws InterruptedException {
 
 1. Clone the repository:
 ```bash
-git clone [https://github.com/Rontim/nexusflow.git](https://github.com/your-username/nexusflow.git)
-cd nexusflow
+git clone [https://github.com/Rontim/NexusFlow.git](https://github.com/Rontim/NexusFlow.git)
+cd NexusFlow
 
 ```
 
