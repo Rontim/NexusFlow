@@ -2,6 +2,7 @@ package com.imanistack.tenant.order.application;
 
 import com.imanistack.shared.infrastructure.exception.ResourceNotFoundException;
 import com.imanistack.shared.infrastructure.tenant.TenantContext;
+import com.imanistack.tenant.auth.domain.UserType;
 import com.imanistack.tenant.order.domain.OrderPlacedEvent;
 import com.imanistack.tenant.order.domain.OrderStatus;
 import com.imanistack.tenant.order.infrastructure.OrderEntity;
@@ -34,22 +35,23 @@ public class OrderService {
 
     public OrderService(OrderRepository orderRepository,
                         ProductRepository productRepository,
+                        InventoryRepository inventoryRepository,
                         InventoryService inventoryService,
                         ApplicationEventPublisher eventPublisher,
                         UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.inventoryRepository = inventoryRepository;
         this.inventoryService = inventoryService;
         this.eventPublisher = eventPublisher;
         this.userRepository = userRepository;
-        this.inventoryRepository = inventoryRepository;
     }
 
     @Transactional
     public OrderResponse placeOrder(PlaceOrderRequest request) {
         UUID tenantId = TenantContext.getCurrentTenantId();
 
-        if (!userRepository.existsByIdAndTenantIdAndRole(request.customerId(), tenantId, "CUSTOMER")) {
+        if (!userRepository.existsByIdAndTenantIdAndRole(request.customerId(), tenantId, UserType.CUSTOMER)) {
             throw new ResourceNotFoundException("Customer not found in the current tenant: " + request.customerId());
         }
 
